@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>OneMinute 실시간 매칭 웹 체험</title>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin-top: 60px; }
+    #status { margin: 20px; font-size: 1.2em; }
+    #partner { margin: 20px; }
+    button { font-size: 1.1em; padding: 10px 30px; }
+  </style>
+</head>
+<body>
+  <h2>OneMinute 실시간 매칭 웹 체험</h2>
+  <div id="status">매칭 대기 중이 아닙니다.</div>
+  <button id="startBtn">매칭 시작</button>
+  <div id="partner"></div>
+  <script>
+    let socket;
+    document.getElementById('startBtn').onclick = function() {
+      document.getElementById('status').innerText = '실시간 매칭 대기 중...';
+      socket = io();
+      const user = {
+        id: 'web-' + Math.random().toString(36).substr(2, 6),
+        country: 'KR',
+        name: '웹유저',
+        avatar: 'https://randomuser.me/api/portraits/men/2.jpg'
+      };
+      socket.emit('join-matching', user);
+      socket.on('match-found', data => {
+        document.getElementById('status').innerText = '매칭 성공!';
+        document.getElementById('partner').innerHTML =
+          `<b>상대방:</b> ${data.partner.name} (${data.partner.country})<br>` +
+          `<img src='${data.partner.avatar}' width='80' style='border-radius:40px;margin-top:8px;'>`;
+      });
+    };
+  </script>
+</body>
+</html> 
