@@ -3,10 +3,27 @@ const http = require('http');
 const { Server } = require('socket.io');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
+const helmet = require('helmet');
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: '*' } });
+
+// helmet 기본 사용 (CSP 완화) - static 서빙보다 먼저 적용
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'", "https://fonts.googleapis.com", "https://fonts.gstatic.com"],
+        styleSrc: ["'self'", "https://fonts.googleapis.com", "'unsafe-inline'"],
+        fontSrc: ["'self'", "https://fonts.gstatic.com"],
+        imgSrc: ["'self'", "data:"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.socket.io"],
+        connectSrc: ["'self'", "ws:", "wss:"],
+      },
+    },
+  })
+);
 
 const waitingUsers = new Map();
 
