@@ -43,7 +43,7 @@ function tryMatch(socketId) {
   if (!current) return;
 
   const candidates = [...waitingUsers.values()]
-    .filter(u => u.socketId !== socketId && u.user.country !== current.user.country);
+    .filter(u => u.socketId !== socketId);
 
   if (candidates.length > 0) {
     const partner = candidates[0];
