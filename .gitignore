@@ -3,6 +3,15 @@
 # dependencies
 node_modules/
 
+.gradle/
+.android/
+AppData/
+node_modules/
+*.log
+*.tmp
+*.cache
+.DS_Store
+
 # Expo
 .expo/
 dist/

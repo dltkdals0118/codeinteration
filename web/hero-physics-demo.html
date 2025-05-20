@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Hero Demo (No 3D)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      margin: 0; padding: 0; width: 100vw; height: 100vh;
+      background: #111; color: #fff; font-family: sans-serif;
+      overflow: hidden;
+    }
+    #interaction-hint {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      z-index: 10; color: rgba(255,255,255,0.8); font-size: 1em;
+      background: rgba(0,0,0,0.3); padding: 0.5em 1.2em; border-radius: 1em;
+      pointer-events: none; opacity: 1; transition: opacity 1s;
+    }
+    #loading-indicator {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      z-index: 20; color: #fff; font-size: 1.2em;
+      background: rgba(0,0,0,0.7); padding: 1.2em 2em; border-radius: 1.5em;
+      display: flex; align-items: center; gap: 1em;
+    }
+    #fallback-message {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      z-index: 30; color: #fff; font-size: 2em; background: #222;
+      padding: 2em 3em; border-radius: 2em; text-align: center; display: none;
+    }
+    @media (max-width: 600px) {
+      #interaction-hint { font-size: 0.9em; }
+      #loading-indicator { font-size: 1em; }
+      #fallback-message { font-size: 1.2em; }
+    }
+  </style>
+</head>
+<body>
+  <div id="interaction-hint">스크롤하거나 텍스트를 터치/클릭해보세요</div>
+  <div id="loading-indicator"><span>⏳</span> 환경을 준비 중...</div>
+  <div id="fallback-message">이 장치는 3D 효과를 지원하지 않거나,<br>접근성 설정에 따라 2D 버전이 제공됩니다.<br><br><b>PORTFOLIO</b></div>
+  <script>
+    // 접근성: prefers-reduced-motion
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.getElementById('fallback-message').style.display = 'block';
+      document.getElementById('loading-indicator').style.display = 'none';
+      document.getElementById('interaction-hint').style.display = 'none';
+    } else {
+      document.getElementById('loading-indicator').style.display = 'none';
+    }
+    // 힌트 자동 fade out
+    setTimeout(() => {
+      const hint = document.getElementById('interaction-hint');
+      if (hint && parseFloat(hint.style.opacity) > 0) {
+        hint.style.opacity = 0;
+      }
+    }, 5000);
+  </script>
+</body>
+</html> 
